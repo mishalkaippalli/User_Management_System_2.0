@@ -1,83 +1,124 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { getAllUsers } from '../redux/reducers/userSlice';
+import axios from 'axios'
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const [input, setInput] = useState({
+    name: '',
+    email: '',
+    gender: '',
+    city:  '',
+  });
+
+  const [file, setFile] = useState([])
+  const formdata = new FormData();
+
+  formdata.append('name', input.name)
+  formdata.append('email', input.email)
+  formdata.append('gender', input.gender)
+  formdata.append('city', input.city)
+  formdata.append('profile', file)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await axios.post('http://localhost:9000/api/v1/users', formdata);
+    dispatch(getAllUsers());
+    navigate("/")
+  }
+
    return (
-    <div className='container flex items-center justify-content-center'>
+    <div className ='container flex items-center justify-content-center'>
       <h2
-        className='text-center text-white p-2 m-2'
+        className ='text-center text-white p-2 m-2'
         style={{backgroundColor: "blue"}}
         >
           Add new user
       </h2>
 
-      <form className = 'p-2 m-2'>
-        <div class = 'form-group m-3'>
-           <label for="name">Name</label>
+      <form className  = 'p-2 m-2' onSubmit={handleSubmit}>
+        <div className  = 'form-group m-3'>
+           <label htmlFor="name">Name</label>
            <input
            type = 'text'
-           class = 'form-control'
+           className  = 'form-control'
            id = 'name'
            placeholder='Enter Name'
+           name = 'name'
+           onChange={(e) => setInput({...input, [e.target.name]: e.target.value})}
            />
         </div>
-        <div class = 'form-group  m-3'>
-          <label for='name'>Email</label>
+        <div className  = 'form-group  m-3'>
+          <label htmlFor='email'>Email</label>
           <input
           type='email'
-          class='form-control'
+          className ='form-control'
           id = 'email'
           placeholder='enter email'
+          value={input.email}
+          name='email'
+           onChange={(e) => setInput({...input, [e.target.name]: e.target.value})}
           />
         </div>
 
-        <label for = "gender">Gender</label>
-        <div class= 'form-group'>
-          <div class='form-check form-check-inline m-3'>
+        <label  htmlFor = "gender">Gender</label>
+        <div className = 'form-group'>
+          <div className ='form-check form-check-inline m-3'>
              <input
-               class="form-check-input"
+               className ="form-check-input"
                type='radio'
                id='gender'
-               value='Male'
+               value="Male"
+               name='gender'
+                onChange={(e) => setInput({...input, [e.target.name]: e.target.value})}
              />
-             <label class='form-check-label' for = 'gender'>Male</label>
+             <label className ='form-check-label' htmlFor = 'gender'>Male</label>
           </div>
-          <div class='form-check-label form-check-inline'>
+          <div className ='form-check-label form-check-inline'>
             <input
-              class='form-check-input'
+              className ='form-check-input'
               type="radio"
               id="Female"
               value="female"
+              name='gender'
+              onChange={(e) => setInput({...input, [e.target.name]: e.target.value})}
             />
-            <label class="form-check-label">Female</label>
+            <label className ="form-check-label">Female</label>
           </div>
         </div>
-        <div class="form-group">
+        <div className ="form-group">
           <label>City</label>
-          <select className='form-select m-2'>
-            <option value='Edapal' selected>
-               Edapal
-            </option>
-            <option>Calicut</option>
-            <option>Thrissur</option>
+          <select className ='form-select m-2' 
+          name='city'
+          value={input.city}
+          onChange={(e) => setInput({...input, [e.target.name]: e.target.value})}
+          >
+            <option value='Edapal' >Edapal</option>
+            <option value='Calicut'>Calicut</option>
+            <option value='Thrissur'>Thrissur</option>
           </select>
         </div>
-        <div class = 'form-group m-3'>
+        <div className  = 'form-group m-3'>
           <label>Profile</label>
           <input 
             type="file"
-            class="form-control"
+            name='profile'
+            onChange={(e) => setFile(e.target.files[0])}
+            className ="form-control"
             id='exxampleinputemail'
             aria-describedby='emailHelp'
             placeholder='Enter Name'
           />
         </div>
 
-        <button type='submit' class="btn btn-primary">
+        <button type='submit' className ="btn btn-primary">
           Submit
         </button>
         <Link to = {"/"}>
-          <button className="btn btn-danger m-3">Cancel</button>
+          <button className ="btn btn-danger m-3">Cancel</button>
         </Link>  
       </form>
     </div>

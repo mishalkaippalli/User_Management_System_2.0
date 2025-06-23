@@ -13,7 +13,7 @@ const Home = () => {
   const { users } = useSelector((state) => state.users)
 
   return (
-    <div className="continer flex items-center justify-content-center">
+    <div className="container flex items-center justify-content-center">
       <h2
         style={{ backgroundColor: "blue" }}
         className="text-center text-white p-2 m-2"
@@ -31,26 +31,36 @@ const Home = () => {
 
       <table className="table table-striped">
         <thead>
-          <tbody>
-            {users &&
-              users.map((user) => {
-                return (
-                  <tr>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.gender}</td>
-                    <td>{user.city}</td>
-                      <img
-                        src={`http://localhost:9000/${user.profile}`}
-                        className="img img-rounded"
-                        height='100px'
-                        width='100px'
-                      />
-                  </tr>
-                )
-              })}
-          </tbody>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>City</th>
+            <th>Profile</th>
+          </tr>
         </thead>
+        <tbody>
+          {users &&
+            users.map((user, index) => {
+              return (
+                <tr key={index}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.gender}</td>
+                  <td>{user.city}</td>
+                  <td>
+                    <img
+                      src={`http://localhost:9000/${user.profile}`}
+                      className="img img-rounded"
+                      height="100px"
+                      width="100px"
+                      alt={user.name}
+                    />
+                  </td>
+                </tr>
+              )
+            })}
+        </tbody>
       </table>
     </div>
   )

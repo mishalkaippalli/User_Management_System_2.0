@@ -4,11 +4,11 @@ import axios from "axios"
 const intialValues = {
   users: [],
   loading: true,
-}
+};
 
 export const getAllUsers = createAsyncThunk("users/getAllUsers", async () => {
   const response = await axios.get("http://localhost:9000/api/v1/users")
-  return response.data
+  return response.data;
 })
 
 const userSlice = createSlice({
